@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "74758815137",
+    "project_id": "cakelab-3152e",
+    "storage_bucket": "cakelab-3152e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:74758815137:android:0a50011a246e9dfbb61fe0",
+        "android_client_info": {
+          "package_name": "com.example.cake_lab"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfLGUSygQaXyKDhKulpbfsbUgOfwveW-M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
