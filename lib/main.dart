@@ -2,15 +2,12 @@ import 'package:cake_lab/profile.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'api_lab/get_data.dart';
-import 'api_lab/post_data.dart';
 import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart' show ProviderScope;
 
 import 'home.dart';
 import 'login.dart';
-import 'p1.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -95,7 +92,7 @@ class AuthGate extends StatelessWidget {
           }
           // 已登入
           if(snapshot.hasData){
-            return BottomNavicationController();
+            return BottomNavigationController();
           }
           // 未登入
           return const LoginPage();
@@ -108,14 +105,14 @@ class AuthGate extends StatelessWidget {
 
 
 
-class BottomNavicationController extends StatefulWidget {
-  const BottomNavicationController({super.key});
+class BottomNavigationController extends StatefulWidget {
+  const BottomNavigationController({super.key});
 
   @override
-  State<BottomNavicationController> createState() => _BottomNavicationControllerState();
+  State<BottomNavigationController> createState() => _BottomNavigationControllerState();
 }
 
-class _BottomNavicationControllerState extends State<BottomNavicationController> {
+class _BottomNavigationControllerState extends State<BottomNavigationController> {
   int _currentIndex = 0;
   final pages = [CakeHomePage(),ProfilePage()];
 

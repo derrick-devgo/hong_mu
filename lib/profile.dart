@@ -23,18 +23,31 @@ class _ProfilePageState extends State<ProfilePage> {
   );
 
   Future<void> _logout() async{
-    if(_isBusy) return;
-    setState(() {
-      _isBusy = true;
-    });
+    if (_isBusy) return;
+    setState(() { _isBusy = true; }); // 1. 更新畫面轉圈圈
 
-    try{
+    try {
+      // 2. 這是一個耗時操作，需要等待網路回應
       await FirebaseAuth.instance.signOut();
-      if(mounted) Navigator.of(context).maybePop();
-    }on FirebaseAuthException catch (e){
-      if(!mounted) return;
+
+      // ---------------------------------------------------
+      // 在上面這行等待的時間內，使用者可能覺得太慢，
+      // 按下了「上一頁」或直接關閉了這個畫面。
+      // 如果使用者離開了，這個 ProfilePage 就被銷毀 (dispose) 了。
+      // ---------------------------------------------------
+
+      // 3. 網路回應回來了，程式碼繼續往下執行
+      if (mounted) Navigator.of(context).maybePop();
+
+    } on FirebaseAuthException catch (e) {
+
+      // 4. 安全檢查！
+      if (!mounted) return;
+
+      // 5. 如果沒有上面那行檢查，而頁面已經關閉，
+      // 這裡使用 `context` 就會導致錯誤，因為 context 已經失效了。
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content:Text(e.message??'登出失敗')),
+        SnackBar(content: Text(e.message ?? '登出失敗')),
       );
     }catch(_){
       if(!mounted) return;
@@ -77,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       _toast(context, '已更新資料');
                     }
                   },
-                  onChangeAvatar: ()=>_toast(context,'更換頭像')
+
               ),
               _SectionCard(
                   child: Column(
@@ -160,13 +173,13 @@ class _HeaderRow extends StatelessWidget {
     required this.name,
     required this.avatarUrl,
     required this.onEdit,
-    required this.onChangeAvatar,
+
   });
 
   final String name;
   final String avatarUrl;
   final VoidCallback onEdit;
-  final VoidCallback onChangeAvatar;
+
 
 
   @override
@@ -176,37 +189,14 @@ class _HeaderRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
       child: Row(
         children: [
-          Stack(
-            children: [
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color:Color(0xFFE7E7E7)),
-                    image:DecorationImage(image: NetworkImage(avatarUrl),fit:BoxFit.cover)
-                ),
-              ),
-              Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(100),
-                    onTap: (){
-                      print('hello world!');
-                    },
-                    child: Container(
-                      width: 22,
-                      height: 22,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        shape: BoxShape.circle
-                      ),
-                      child: const Icon(Icons.camera_alt,size:14,color:Colors.white),
-                    ),
-                  )
-              )
-            ],
+          Container(
+            width: 80,
+            height: 80,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color:Color(0xFFE7E7E7)),
+                image:DecorationImage(image: NetworkImage(avatarUrl),fit:BoxFit.cover)
+            ),
           ),
           const SizedBox(width: 16,),
           Expanded(
