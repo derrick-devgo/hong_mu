@@ -43,7 +43,6 @@ class CartNotifier extends Notifier<List<CartItem>>{
             e
       ];
     }
-
   }
 
   void increment(String productId,[int step=1]){
